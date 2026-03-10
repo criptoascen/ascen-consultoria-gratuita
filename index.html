@@ -447,69 +447,49 @@ function submitForm() {
 
     const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSelc-2uGZE1mvHtwtOCPqC4J7QAHlXtTrgjDxiFdnbL45KtpQ/formResponse';
 
-    let iframe = document.getElementById('hidden_iframe_google');
-    if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.name = 'hidden_iframe_google';
-        iframe.id = 'hidden_iframe_google';
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-    }
+    // Build URLSearchParams for proper encoding
+    const params = new URLSearchParams();
+    params.append('entry.979645034', data.nome);
+    params.append('entry.810042357', data.nacionalidade);
+    params.append('entry.1230689849', data.cidade);
+    params.append('entry.685562726', data.telefone);
+    params.append('entry.1881763924', data.email);
+    params.append('entry.878876579', data.mercado_trad);
+    params.append('entry.1611461355', data.investe_cripto);
+    params.append('entry.1980910773', data.tempo_cripto);
+    params.append('entry.1707582076', data.nivel);
+    params.append('entry.1442964842', data.alocacao);
+    params.append('entry.1579919800', data.risco);
 
-    const form = document.createElement('form');
-    form.action = GOOGLE_FORM_URL;
-    form.method = 'POST';
-    form.target = 'hidden_iframe_google';
-    form.style.display = 'none';
+    // Checkboxes: append each value separately
+    data.objetivos.forEach(valor => params.append('entry.1132284262', valor));
+    data.dificuldade.forEach(valor => params.append('entry.2117605384', valor));
 
-    function addField(name, value) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value;
-        form.appendChild(input);
-    }
+    params.append('entry.695452647', data.origem);
+    params.append('entry.671754045', data.info_adicional || 'Nenhuma');
+    params.append('entry.652355824', data.declaracao);
 
-    addField('entry.979645034', data.nome);
-    addField('entry.810042357', data.nacionalidade);
-    addField('entry.1230689849', data.cidade);
-    addField('entry.685562726', data.telefone);
-    addField('entry.1881763924', data.email);
-    addField('entry.878876579', data.mercado_trad);
-    addField('entry.1611461355', data.investe_cripto);
-    addField('entry.1980910773', data.tempo_cripto);
-    addField('entry.1707582076', data.nivel);
-    addField('entry.1442964842', data.alocacao);
-    addField('entry.1579919800', data.risco);
-
-    data.objetivos.forEach(valor => addField('entry.1132284262', valor));
-    data.dificuldade.forEach(valor => addField('entry.2117605384', valor));
-
-    addField('entry.695452647', data.origem);
-    addField('entry.671754045', data.info_adicional || 'Nenhuma');
-    addField('entry.652355824', data.declaracao);
-
-    document.body.appendChild(form);
-
-    try {
-        form.submit();
-
-        setTimeout(() => {
-            if (document.body.contains(form)) {
-                document.body.removeChild(form);
-            }
-            goStep(5);
-            btn.disabled = false;
-            btn.textContent = 'Enviar Formulário ✓';
-        }, 1200);
-    } catch (error) {
-        if (document.body.contains(form)) {
-            document.body.removeChild(form);
-        }
+    // Use fetch with no-cors mode to submit the form data
+    fetch(GOOGLE_FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+    })
+    .then(() => {
+        // With no-cors we can't read the response, but the data is sent
+        goStep(5);
+    })
+    .catch(error => {
+        console.error('Erro ao enviar:', error);
+        alert('Ocorreu um erro ao enviar. Tente novamente.');
+    })
+    .finally(() => {
         btn.disabled = false;
         btn.textContent = 'Enviar Formulário ✓';
-        alert('Ocorreu um erro ao enviar. Tente novamente.');
-    }
+    });
 }
 </script>
 </body>
