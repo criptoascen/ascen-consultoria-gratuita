@@ -426,7 +426,6 @@ function submitForm() {
     btn.disabled = true;
     btn.textContent = 'Enviando...';
 
-    // Collect all data
     const data = {
         nome: document.getElementById('nome').value.trim(),
         nacionalidade: document.getElementById('nacionalidade').value.trim(),
@@ -446,20 +445,71 @@ function submitForm() {
         declaracao: getRadioValue('declaracao')
     };
 
-    // Submit to Google Forms
-    // The form URL for submission
     const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSelc-2uGZE1mvHtwtOCPqC4J7QAHlXtTrgjDxiFdnbL45KtpQ/formResponse';
 
-    // NOTE: You need to map these to the actual Google Forms entry IDs
-    // To find them: open the Google Form, inspect element on each field, look for "entry.XXXXXXX"
-    // For now, we'll show success and you can connect later
-    
-    // Show success after brief delay
-    setTimeout(() => {
-        goStep(5);
+    let iframe = document.getElementById('hidden_iframe_google');
+    if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.name = 'hidden_iframe_google';
+        iframe.id = 'hidden_iframe_google';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+    }
+
+    const form = document.createElement('form');
+    form.action = GOOGLE_FORM_URL;
+    form.method = 'POST';
+    form.target = 'hidden_iframe_google';
+    form.style.display = 'none';
+
+    function addField(name, value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        form.appendChild(input);
+    }
+
+    addField('entry.979645034', data.nome);
+    addField('entry.810042357', data.nacionalidade);
+    addField('entry.1230689849', data.cidade);
+    addField('entry.685562726', data.telefone);
+    addField('entry.1881763924', data.email);
+    addField('entry.878876579', data.mercado_trad);
+    addField('entry.1611461355', data.investe_cripto);
+    addField('entry.1980910773', data.tempo_cripto);
+    addField('entry.1707582076', data.nivel);
+    addField('entry.1442964842', data.alocacao);
+    addField('entry.1579919800', data.risco);
+
+    data.objetivos.forEach(valor => addField('entry.1132284262', valor));
+    data.dificuldade.forEach(valor => addField('entry.2117605384', valor));
+
+    addField('entry.695452647', data.origem);
+    addField('entry.671754045', data.info_adicional || 'Nenhuma');
+    addField('entry.652355824', data.declaracao);
+
+    document.body.appendChild(form);
+
+    try {
+        form.submit();
+
+        setTimeout(() => {
+            if (document.body.contains(form)) {
+                document.body.removeChild(form);
+            }
+            goStep(5);
+            btn.disabled = false;
+            btn.textContent = 'Enviar Formulário ✓';
+        }, 1200);
+    } catch (error) {
+        if (document.body.contains(form)) {
+            document.body.removeChild(form);
+        }
         btn.disabled = false;
         btn.textContent = 'Enviar Formulário ✓';
-    }, 1000);
+        alert('Ocorreu um erro ao enviar. Tente novamente.');
+    }
 }
 </script>
 </body>
