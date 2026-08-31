@@ -556,7 +556,10 @@ function coletar() {
 }
 
 // ============================================================
-// CAMINHO 1 — Google Forms (fetch no-cors + iframe redundante)
+// CAMINHO 1 — Google Forms.
+// O fetch é o caminho normal; o iframe SÓ entra se o fetch falhar
+// (rede caída, fetch bloqueado). Disparar os dois sempre gravaria a
+// mesma resposta duas vezes na planilha.
 // ============================================================
 function payloadParaBody(payload) {
     var partes = [];
@@ -567,11 +570,16 @@ function payloadParaBody(payload) {
     });
     return partes.join('&');
 }
+// Resolve true se o POST saiu, false se a rede recusou (aí o iframe assume).
+// Com no-cors a resposta é opaca: "saiu" não é o mesmo que "o Google aceitou" —
+// por isso o payload precisa estar no formato certo (ver coletar()).
 function enviarParaFormFetch(payload) {
     try {
         return fetch(GOOGLE_FORM_ACTION, { method: 'POST', mode: 'no-cors',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: payloadParaBody(payload) }).catch(function () {});
-    } catch (e) { return Promise.resolve(); }
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: payloadParaBody(payload) })
+            .then(function () { return true; })
+            .catch(function () { return false; });
+    } catch (e) { return Promise.resolve(false); }
 }
 function enviarParaFormIframe(payload) {
     try {
@@ -824,16 +832,22 @@ function submitForm() {
         _enviando = false;
     }
 
-    // 2) Google Forms — fetch cego + iframe redundante (os dois caminhos que
-    //    hoje já existem, agora com o payload no formato que o Google aceita)
-    enviarParaFormFetch(payload);
-    enviarParaFormIframe(payload);
+    // 2) Google Forms — agora com o payload no formato que o Google aceita.
+    //    O iframe só entra se o fetch não sair (senão vira resposta duplicada).
+    var formEnviado = enviarParaFormFetch(payload).then(function (ok) {
+        if (!ok) enviarParaFormIframe(payload);
+        return true;
+    });
     reg.form_ja_enviado = true;
     if (TEM_ENDPOINT) atualizarNaFila(reg);
 
-    // 3) Sem Apps Script configurado: o Forms é o único caminho. Mostra a tela
-    //    de sucesso depois de dar tempo do POST sair.
-    if (!TEM_ENDPOINT) { setTimeout(function () { concluir(true); }, 1200); return; }
+    // 3) Sem Apps Script configurado: o Forms é o único caminho. Espera o POST
+    //    sair antes de trocar de tela.
+    if (!TEM_ENDPOINT) {
+        formEnviado.then(function () { setTimeout(function () { concluir(true); }, 600); });
+        setTimeout(function () { concluir(true); }, 8000);   // nunca prende o cliente
+        return;
+    }
 
     // 3') Com Apps Script: confirmação real, com fallback honesto.
     enviarParaScript(reg, 25000).then(function (resp) {
