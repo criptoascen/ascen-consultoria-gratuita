@@ -122,6 +122,9 @@
         .step.active{display:block;animation:fadeUp 0.4s ease}
         @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
+        /* Honeypot: invisível pra gente, preenchível por robô */
+        .hp{position:absolute!important;left:-9999px!important;top:auto;width:1px;height:1px;overflow:hidden}
+
         .error-msg{color:#f87171;font-size:12px;margin-top:6px;display:none}
         .field.error input,.field.error textarea{border-color:#f87171}
         .field.error .error-msg{display:block}
@@ -154,6 +157,12 @@
         <div class="card">
             <div class="sec-label">Seção 1 de 3</div>
             <div class="sec-title">Dados Pessoais e Contato</div>
+            <p class="hint">Ao avançar para a próxima seção, seus dados de contato já ficam registrados conosco para que possamos falar com você.</p>
+
+            <!-- Honeypot anti-robô: humano nunca vê nem preenche -->
+            <div class="hp" aria-hidden="true">
+                <label>Não preencha este campo<input type="text" id="empresa_site" tabindex="-1" autocomplete="off"></label>
+            </div>
 
             <div class="field" data-required>
                 <label class="label">Nome Completo <span class="req">*</span></label>
@@ -172,8 +181,8 @@
             </div>
             <div class="field" data-required>
                 <label class="label">Telefone (WhatsApp) <span class="req">*</span></label>
-                <input type="tel" id="telefone" placeholder="(00) 00000-0000">
-                <div class="error-msg">Este campo é obrigatório</div>
+                <input type="tel" id="telefone" placeholder="(11) 91234-5678">
+                <div class="error-msg">Informe um WhatsApp válido com DDD. Número de fora do Brasil: comece com +</div>
             </div>
             <div class="field" data-required>
                 <label class="label">E-mail <span class="req">*</span></label>
@@ -401,11 +410,101 @@ var FORM_ENTRIES = {
     declaracao:      'entry.652355824'
 };
 
+// Campos que o cliente vê (PDF/WhatsApp/CSV). "Origem (campanha)" fica fora
+// de propósito: é dado interno de marketing, não vai na mensagem do cliente.
 var CAMPOS_ORDEM = ["Nome","E-mail","Telefone","Cidade - Estado","Nacionalidade",
     "Investe tradicional","Investe cripto","Tempo em cripto","Nível","Alocação pretendida",
     "Tolerância a risco","Objetivos","Dificuldades","Origem","Info adicional","Declaração"];
+var CAMPOS_INTERNOS = ["Origem (campanha)"];
 
 var _ultimaResposta = null;
+
+// ============================================================
+// IDENTIDADE DO LEAD — o mesmo id acompanha a captura parcial (fim da
+// Seção 1) e o envio completo, para o servidor juntar as duas numa linha só.
+// ============================================================
+var LEAD_ID_KEY = "ascen_cg_lead_id";
+var _leadId = null;
+function novoId(prefixo) { return prefixo + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); }
+function leadId() {
+    if (_leadId) return _leadId;
+    try { _leadId = localStorage.getItem(LEAD_ID_KEY) || null; } catch (e) {}
+    if (!_leadId) {
+        _leadId = novoId('cg');
+        try { localStorage.setItem(LEAD_ID_KEY, _leadId); } catch (e) {}
+    }
+    return _leadId;
+}
+function limparLeadId() { _leadId = null; try { localStorage.removeItem(LEAD_ID_KEY); } catch (e) {} }
+
+// ============================================================
+// ORIGEM DE CAMPANHA — guarda a PRIMEIRA captura: o cliente pode recarregar
+// a página sem os parâmetros, ou voltar depois pelo link limpo.
+// Parsing manual (URLSearchParams não existe no Safari antigo).
+// ============================================================
+var UTM_KEY = "ascen_cg_utm";
+var UTM_CHAVES = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'];
+function capturarUTM() {
+    var achado = {}, algum = false;
+    try {
+        var busca = window.location.search.replace(/^\?/, '');
+        busca.split('&').forEach(function (par) {
+            if (!par) return;
+            var i = par.indexOf('=');
+            var k = decodeURIComponent((i < 0 ? par : par.slice(0, i)).replace(/\+/g, ' '));
+            var v = i < 0 ? '' : decodeURIComponent(par.slice(i + 1).replace(/\+/g, ' '));
+            if (v && UTM_CHAVES.indexOf(k) !== -1) { achado[k] = v.slice(0, 120); algum = true; }
+        });
+    } catch (e) {}
+    try {
+        if (algum) { localStorage.setItem(UTM_KEY, JSON.stringify(achado)); return achado; }
+        var salvo = JSON.parse(localStorage.getItem(UTM_KEY) || 'null');
+        if (salvo) return salvo;
+    } catch (e) {}
+    return achado;
+}
+function utmTexto() {
+    var u = capturarUTM(), partes = [];
+    UTM_CHAVES.forEach(function (k) { if (u[k]) partes.push(k.replace('utm_', '') + '=' + u[k]); });
+    try { if (document.referrer && document.referrer.indexOf(window.location.host) === -1) partes.push('ref=' + document.referrer.slice(0, 120)); } catch (e) {}
+    return partes.join(' | ');
+}
+
+// ============================================================
+// TELEFONE — o WhatsApp é o canal de retorno; número errado é lead perdido.
+// Máscara só para número brasileiro; quem começa com + passa direto.
+// ============================================================
+function telefoneValido(v) {
+    v = String(v || '').trim();
+    if (!v) return false;
+    if (v.charAt(0) === '+') return v.replace(/\D/g, '').length >= 8;   // internacional
+    var d = v.replace(/\D/g, '');
+    if ((d.length === 12 || d.length === 13) && d.indexOf('55') === 0) d = d.slice(2);
+    if (d.length !== 10 && d.length !== 11) return false;
+    var ddd = parseInt(d.slice(0, 2), 10);
+    if (!(ddd >= 11 && ddd <= 99)) return false;
+    if (d.length === 11 && d.charAt(2) !== '9') return false;           // celular tem o 9
+    return true;
+}
+function mascaraTelefone(el) {
+    if (el.value.charAt(0) === '+') return;                             // internacional: não mexe
+    var d = el.value.replace(/\D/g, '').slice(0, 11);
+    var out = '';
+    if (d.length) out = '(' + d.slice(0, 2);
+    if (d.length >= 3) out += ') ' + (d.length > 10 ? d.slice(2, 7) + '-' + d.slice(7) : (d.length > 6 ? d.slice(2, 6) + '-' + d.slice(6) : d.slice(2)));
+    else if (d.length === 2) out += ')';
+    el.value = out;
+}
+(function () {
+    var tel = document.getElementById('telefone');
+    if (tel) tel.addEventListener('input', function () { mascaraTelefone(tel); });
+})();
+
+// Robô preencheu o campo invisível? Então não é gente.
+function ehRobo() {
+    var hp = document.getElementById('empresa_site');
+    return !!(hp && hp.value);
+}
 
 // ============================================================
 // UI: marca radio/checkbox visualmente
@@ -469,12 +568,18 @@ function validateStep(stepNum) {
             if (input && input.type === 'email' && input.value.trim()) {
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) { field.classList.add('error'); valid = false; }
             }
+            if (input && input.type === 'tel' && input.value.trim() && !telefoneValido(input.value)) {
+                field.classList.add('error'); valid = false;
+            }
         }
     });
     return valid;
 }
 function validateAndGo(from, to) {
-    if (validateStep(from)) goStep(to);
+    if (validateStep(from)) {
+        if (from === 2) enviarParcial();   // contato registrado antes do fim
+        goStep(to);
+    }
     else {
         var firstError = document.querySelector('#step' + from + ' .field.error');
         if (firstError) firstError.scrollIntoView({behavior: 'smooth', block: 'center'});
@@ -552,7 +657,36 @@ function coletar() {
     set(E.info_adicional, val('info_adicional'), 'Info adicional');
     set(E.declaracao, getRadioValue('declaracao'), 'Declaração');
 
+    // Só na planilha própria: o Google Form não tem pergunta pra campanha.
+    var campanha = utmTexto();
+    if (campanha) legivel['Origem (campanha)'] = campanha;
+
     return { payload: payload, legivel: legivel };
+}
+
+// ============================================================
+// CAPTURA PARCIAL — dispara ao concluir a Seção 1. Quem abandona depois
+// ainda vira lead. Só existe com o Apps Script no ar (o Google Forms não
+// aceita resposta pela metade em pergunta obrigatória).
+// ============================================================
+var _parcialEnviado = false;
+function enviarParcial() {
+    if (!TEM_ENDPOINT || _parcialEnviado || ehRobo()) return;
+    _parcialEnviado = true;
+    enviarParaScript({
+        id: leadId() + '-parcial',
+        lead: leadId(),
+        parcial: true,
+        quando: new Date().toISOString(),
+        legivel: {
+            'Nome': val('nome'),
+            'E-mail': val('email'),
+            'Telefone': val('telefone'),
+            'Cidade - Estado': val('cidade'),
+            'Nacionalidade': val('nacionalidade'),
+            'Origem (campanha)': utmTexto()
+        }
+    }, 15000);
 }
 
 // ============================================================
@@ -669,7 +803,7 @@ function lerLocal() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[
 function baixarBackupCSV() {
     var lista = lerLocal();
     if (!lista.length) { alert("Nenhuma resposta gravada neste dispositivo."); return; }
-    var cols = ["_quando"].concat(CAMPOS_ORDEM);
+    var cols = ["_quando"].concat(CAMPOS_ORDEM).concat(CAMPOS_INTERNOS);
     var esc = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
     var linhas = [cols.join(',')];
     lista.forEach(function (r) { linhas.push(cols.map(function (c) { return esc(r[c]); }).join(',')); });
@@ -789,6 +923,8 @@ var _enviando = false;
 function submitForm() {
     if (_enviando) return;
     if (!validateStep(4)) return;
+    // Robô: mostra a tela de sucesso e não manda nada a lugar nenhum.
+    if (ehRobo()) { montarTelaSucesso(true); goStep(5); return; }
     _enviando = true;
     var btn = document.getElementById('submitBtn');
     var btnVoltar = document.querySelector('#step4 .btn-secondary');
@@ -803,7 +939,9 @@ function submitForm() {
     prepararCTA(legivel);
 
     var reg = {
-        id: 'cg-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+        id: leadId(),
+        lead: leadId(),
+        parcial: false,
         quando: new Date().toISOString(),
         legivel: legivel,
         payload: payload,
@@ -824,6 +962,7 @@ function submitForm() {
         montarTelaSucesso(confirmado);
         goStep(5);
         limparRascunho();
+        limparLeadId();   // "Enviar outra resposta" começa um lead novo
         var aviso = document.getElementById('avisoRascunho');
         if (aviso) aviso.remove();
         setStatus('');
@@ -881,6 +1020,7 @@ if (/[?&]admin=1\b/.test(window.location.search)) {
     document.getElementById('stepAdmin').classList.add('active');
     renderAdmin();
 } else {
+    capturarUTM();        // grava a campanha já na abertura, antes de qualquer recarga
     restaurarRascunho();
 }
 processarFila();
