@@ -20,11 +20,11 @@
         }
         body{font-family:'Sora',sans-serif;background:var(--petrol-deep);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-        /* BG */
-        .bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+        /* BG — top/right/bottom/left antes de inset: Safari < 14.1 ignora inset */
+        .bg{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;z-index:0;pointer-events:none;
             background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(255,102,0,0.05),transparent),
                         radial-gradient(ellipse 60% 50% at 80% 90%,rgba(46,91,118,0.12),transparent)}
-        .grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+        .grid{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;z-index:0;pointer-events:none;
             background-image:linear-gradient(rgba(46,91,118,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(46,91,118,0.03) 1px,transparent 1px);background-size:80px 80px}
 
         .container{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:24px 16px 60px}
@@ -34,7 +34,8 @@
         .header img{max-width:320px;width:100%;height:auto;filter:drop-shadow(0 4px 24px rgba(255,102,0,0.2))}
 
         /* Card */
-        .card{background:var(--card-bg);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;
+        /* -webkit-backdrop-filter: sem o prefixo o Safari não desfoca */
+        .card{background:var(--card-bg);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;
             box-shadow:0 0 60px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.02)}
         .card.intro{border-left:3px solid var(--orange)}
 
@@ -376,6 +377,10 @@
       method="POST" target="hidden_form_iframe" style="display:none"></form>
 
 <script>
+// iOS 9 e Safari antigo não têm NodeList.forEach, e a página inteira usa
+// querySelectorAll(...).forEach. Sem isto o formulário nem carrega lá.
+if (window.NodeList && !NodeList.prototype.forEach) { NodeList.prototype.forEach = Array.prototype.forEach; }
+
 // ============================================================
 // CONFIG
 // ============================================================
@@ -742,15 +747,22 @@ function enviarParaScript(reg, timeoutMs) {
     if (!TEM_ENDPOINT) return Promise.resolve({ ok: false, semEndpoint: true });
     var ctrl = ('AbortController' in window) ? new AbortController() : null;
     var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs || 12000) : null;
-    return fetch(ENDPOINT_URL, {
-        method: 'POST',
-        headers: {'Content-Type': 'text/plain;charset=utf-8'},   // text/plain evita preflight CORS
-        body: JSON.stringify(reg),
-        signal: ctrl ? ctrl.signal : undefined
-    }).then(function (r) { return r.json(); }).then(function (resp) {
+    // try/catch obrigatório: em navegador sem fetch isto lançaria de forma
+    // síncrona e travaria o cliente na tela "Enviando...".
+    try {
+        return fetch(ENDPOINT_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain;charset=utf-8'},   // text/plain evita preflight CORS
+            body: JSON.stringify(reg),
+            signal: ctrl ? ctrl.signal : undefined
+        }).then(function (r) { return r.json(); }).then(function (resp) {
+            if (timer) clearTimeout(timer);
+            return (resp && resp.ok) ? resp : { ok: false };
+        }).catch(function () { if (timer) clearTimeout(timer); return { ok: false }; });
+    } catch (e) {
         if (timer) clearTimeout(timer);
-        return (resp && resp.ok) ? resp : { ok: false };
-    }).catch(function () { if (timer) clearTimeout(timer); return { ok: false }; });
+        return Promise.resolve({ ok: false });
+    }
 }
 
 // ============================================================
