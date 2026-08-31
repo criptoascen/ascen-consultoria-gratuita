@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultoria Gratuita — Ascen Cripto</title>
     <meta name="theme-color" content="#0f1e28">
-    <!-- ?v=2 força o navegador a buscar o favicon novo. Sem isso quem já
-         visitou o site continua vendo o antigo por semanas: favicon é o
-         recurso que o navegador guarda em cache com mais teimosia.
-         Ao trocar o ícone de novo, subir para v=3. -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico?v=2">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <!-- Nomes de arquivo NOVOS, não só ?v=. O Chrome guarda favicon num banco
+         próprio por perfil e pede /favicon.ico sozinho, sem query — então a
+         query string não fura esse cache, mas um caminho novo fura.
+         Os arquivos antigos seguem no repo com o ícone novo dentro, para o
+         pedido implícito de /favicon.ico.
+         Ao trocar o ícone de novo: gerar ...-v3 e apontar as tags para lá. -->
+    <link rel="icon" type="image/x-icon" href="ascen-icon-v2.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="ascen-icon-32-v2.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="ascen-icon-16-v2.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="ascen-touch-v2.png">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
