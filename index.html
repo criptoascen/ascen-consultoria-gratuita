@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultoria Gratuita — Ascen Cripto</title>
+    <meta name="theme-color" content="#0f1e28">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -14,11 +15,11 @@
         :root{
             --orange:#ff6600;--orange-light:#ff8533;--orange-glow:rgba(255,102,0,0.12);
             --petrol:#223947;--petrol-light:#2e5b76;--petrol-deep:#0f1e28;
-            --white:#ffffff;--text:#f1f5f9;--text-sec:#8fa8bc;
+            --gold:#c9a96e;--white:#ffffff;--text:#f1f5f9;--text-sec:#8fa8bc;
             --border:rgba(46,91,118,0.3);--card-bg:rgba(34,57,71,0.85);
         }
         body{font-family:'Sora',sans-serif;background:var(--petrol-deep);color:var(--text);min-height:100vh;overflow-x:hidden}
-        
+
         /* BG */
         .bg{position:fixed;inset:0;z-index:0;pointer-events:none;
             background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(255,102,0,0.05),transparent),
@@ -52,7 +53,7 @@
 
         input[type="text"],input[type="email"],input[type="tel"],textarea{
             width:100%;padding:14px 16px;border-radius:12px;border:1.5px solid var(--border);
-            background:rgba(15,30,40,0.6);color:var(--text);font-family:'Sora',sans-serif;font-size:14px;
+            background:rgba(15,30,40,0.6);color:var(--text);font-family:'Sora',sans-serif;font-size:16px;
             transition:border-color 0.2s,box-shadow 0.2s;outline:none}
         input:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-glow)}
         textarea{min-height:100px;resize:vertical}
@@ -65,7 +66,7 @@
         .option-item:hover{border-color:var(--orange);background:rgba(255,102,0,0.04)}
         .option-item.selected{border-color:var(--orange);background:rgba(255,102,0,0.08);box-shadow:0 0 16px rgba(255,102,0,0.08)}
         .option-item input[type="radio"],.option-item input[type="checkbox"]{
-            appearance:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);
+            -webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);
             flex-shrink:0;margin-top:1px;transition:all 0.2s;cursor:pointer;position:relative}
         .option-item input[type="checkbox"]{border-radius:6px}
         .option-item input:checked{border-color:var(--orange);background:var(--orange)}
@@ -77,7 +78,7 @@
 
         /* Other input inside option */
         .other-input{margin-top:8px;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);
-            background:rgba(15,30,40,0.5);color:var(--text);font-family:'Sora',sans-serif;font-size:13px;outline:none}
+            background:rgba(15,30,40,0.5);color:var(--text);font-family:'Sora',sans-serif;font-size:16px;outline:none}
         .other-input:focus{border-color:var(--orange)}
 
         /* Navigation */
@@ -97,10 +98,16 @@
 
         /* Success */
         .success-icon{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#e05500);
-            display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;
+            display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;color:var(--white);
             box-shadow:0 8px 32px rgba(255,102,0,0.3)}
         .success-title{font-size:28px;font-weight:800;text-align:center;margin-bottom:12px}
         .success-text{text-align:center;color:var(--text-sec);line-height:1.6;font-size:15px}
+        .send-status{text-align:center;font-size:13px;color:var(--text-sec);margin-top:14px;min-height:18px}
+
+        /* Admin */
+        .admin-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+        .admin-table th{text-align:left;color:var(--gold);padding:8px;font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase}
+        .admin-table td{padding:8px;border-bottom:1px solid var(--border);color:var(--text-sec)}
 
         /* Responsive */
         @media(max-width:600px){
@@ -257,7 +264,7 @@
                     <label class="option-item"><input type="checkbox" name="objetivos" value="Aprender sobre o Mercado"><span>Aprender sobre o Mercado</span></label>
                     <label class="option-item"><input type="checkbox" name="objetivos" value="__other__"><span>Outro:</span><input type="text" class="other-input" placeholder="Especifique..." data-other="objetivos"></label>
                 </div>
-                <div class="error-msg">Selecione pelo menos uma opção</div>
+                <div class="error-msg">Selecione pelo menos uma opção (e escreva o texto se marcar "Outro")</div>
             </div>
 
             <div class="field" data-required data-type="checkbox">
@@ -274,7 +281,7 @@
                     <label class="option-item"><input type="checkbox" name="dificuldade" value="Ainda não comecei, estou estudando"><span>Ainda não comecei, estou estudando</span></label>
                     <label class="option-item"><input type="checkbox" name="dificuldade" value="__other__"><span>Outro:</span><input type="text" class="other-input" placeholder="Especifique..." data-other="dificuldade"></label>
                 </div>
-                <div class="error-msg">Selecione pelo menos uma opção</div>
+                <div class="error-msg">Selecione pelo menos uma opção (e escreva o texto se marcar "Outro")</div>
             </div>
 
             <div class="field" data-required data-type="radio">
@@ -290,7 +297,7 @@
                     <label class="option-item"><input type="radio" name="origem" value="Newsletter"><span>Newsletter</span></label>
                     <label class="option-item"><input type="radio" name="origem" value="__other__"><span>Outro:</span><input type="text" class="other-input" placeholder="Especifique..." data-other="origem"></label>
                 </div>
-                <div class="error-msg">Selecione uma opção</div>
+                <div class="error-msg">Selecione uma opção (e escreva o texto se marcar "Outro")</div>
             </div>
 
             <div class="field">
@@ -323,174 +330,546 @@
             <button class="btn btn-secondary" onclick="goStep(3)">← Voltar</button>
             <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Enviar Formulário ✓</button>
         </div>
+        <p class="send-status" id="sendStatus"></p>
     </div>
 
     <!-- STEP 5: Sucesso -->
     <div class="step" id="step5">
         <div class="card" style="text-align:center;padding:48px 32px">
-            <div class="success-icon">✓</div>
-            <div class="success-title">Formulário Enviado!</div>
-            <p class="success-text">Obrigado pelo seu interesse na Ascen Cripto. Nossa equipe irá analisar seu perfil e entrará em contato com você em breve.</p>
+            <div class="success-icon" id="successIcon">✓</div>
+            <div class="success-title" id="successTitle">Formulário Enviado!</div>
+            <p class="success-text" id="successText">Obrigado pelo seu interesse na Ascen Cripto. Nossa equipe irá analisar seu perfil e entrará em contato com você em breve.</p>
             <br>
-            <button class="btn btn-primary" onclick="window.location.reload()" style="max-width:300px;margin:0 auto;display:block">Enviar outra resposta</button>
+            <a id="wppBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#16a34a);text-decoration:none;max-width:360px;margin:0 auto 14px">💬 Falar com a equipe no WhatsApp</a>
+            <br>
+            <button class="btn btn-secondary" onclick="window.location.reload()" style="max-width:360px;margin:0 auto;display:block">↻ Enviar outra resposta</button>
+        </div>
+    </div>
+
+    <!-- ADMIN (acesse com ?admin=1) -->
+    <div class="step" id="stepAdmin">
+        <div class="card">
+            <div class="sec-label">Painel — este dispositivo</div>
+            <div class="sec-title" id="adminCount">Respostas salvas</div>
+            <p class="hint">Backup local (funciona mesmo offline). Exporte o CSV regularmente.</p>
+            <div class="nav-row" style="margin-bottom:16px">
+                <button class="btn btn-primary" onclick="baixarBackupCSV()" style="flex:1">⬇️ Baixar CSV</button>
+                <button class="btn btn-secondary" onclick="limparBackup()">🗑️ Limpar</button>
+            </div>
+            <div id="adminTable"></div>
         </div>
     </div>
 </div>
 
+<!-- Iframe + form ocultos: método redundante de envio ao Google Forms -->
+<iframe name="hidden_form_iframe" style="display:none" title="hidden"></iframe>
+<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSelc-2uGZE1mvHtwtOCPqC4J7QAHlXtTrgjDxiFdnbL45KtpQ/formResponse"
+      method="POST" target="hidden_form_iframe" style="display:none"></form>
+
 <script>
-// Highlight selected options
-document.querySelectorAll('.option-item input').forEach(input => {
-    input.addEventListener('change', () => {
+// ============================================================
+// CONFIG
+// ============================================================
+var GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLSelc-2uGZE1mvHtwtOCPqC4J7QAHlXtTrgjDxiFdnbL45KtpQ/formResponse";
+
+// WhatsApp da empresa (+55 11 91753-6554)
+var WHATSAPP_BASE = "https://wa.me/5511917536554";
+
+// CAMINHO 2 (opcional, mas recomendado): Google Apps Script — grava numa
+// planilha, avisa por e-mail e devolve confirmação REAL de registro.
+// Enquanto estiver vazio, o site usa só o Google Forms (envio cego).
+var ENDPOINT_URL = "";
+var TEM_ENDPOINT = !!ENDPOINT_URL;
+
+// entry.IDs conferidos contra o Google Form real em 31/08/2026.
+var FORM_ENTRIES = {
+    nome:            'entry.979645034',
+    nacionalidade:   'entry.810042357',
+    cidade:          'entry.1230689849',
+    telefone:        'entry.685562726',
+    email:           'entry.1881763924',
+    mercado_trad:    'entry.878876579',
+    investe_cripto:  'entry.1611461355',
+    tempo_cripto:    'entry.1980910773',
+    nivel:           'entry.1707582076',
+    alocacao:        'entry.1442964842',
+    risco:           'entry.1579919800',
+    objetivos:       'entry.1132284262',
+    dificuldade:     'entry.2117605384',
+    origem:          'entry.695452647',
+    info_adicional:  'entry.671754045',
+    declaracao:      'entry.652355824'
+};
+
+var CAMPOS_ORDEM = ["Nome","E-mail","Telefone","Cidade - Estado","Nacionalidade",
+    "Investe tradicional","Investe cripto","Tempo em cripto","Nível","Alocação pretendida",
+    "Tolerância a risco","Objetivos","Dificuldades","Origem","Info adicional","Declaração"];
+
+var _ultimaResposta = null;
+
+// ============================================================
+// UI: marca radio/checkbox visualmente
+// ============================================================
+document.querySelectorAll('.option-item input').forEach(function (input) {
+    input.addEventListener('change', function () {
         if (input.type === 'radio') {
-            input.closest('.option-group').querySelectorAll('.option-item').forEach(item => item.classList.remove('selected'));
+            input.closest('.option-group').querySelectorAll('.option-item').forEach(function (item) { item.classList.remove('selected'); });
         }
-        if (input.checked) {
-            input.closest('.option-item').classList.add('selected');
-        } else {
-            input.closest('.option-item').classList.remove('selected');
-        }
+        if (input.checked) input.closest('.option-item').classList.add('selected');
+        else input.closest('.option-item').classList.remove('selected');
+    });
+});
+// Digitou no campo "Outro" -> marca a opção automaticamente (evita texto perdido sem seleção)
+document.querySelectorAll('.other-input').forEach(function (inp) {
+    inp.addEventListener('input', function () {
+        var item = inp.closest('.option-item');
+        var box = item ? item.querySelector('input[type="radio"], input[type="checkbox"]') : null;
+        if (box && !box.checked && inp.value.trim()) { box.checked = true; box.dispatchEvent(new Event('change')); }
     });
 });
 
 function goStep(n) {
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
     document.getElementById('step' + n).classList.add('active');
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    // iOS antigo ignora scrollTo com objeto — fallback numérico
+    if ('scrollBehavior' in document.documentElement.style) window.scrollTo({top: 0, behavior: 'smooth'});
+    else window.scrollTo(0, 0);
+    if (n >= 2 && n <= 4) { _passoAtual = n; salvarRascunho(); }
 }
 
+// ============================================================
+// VALIDAÇÃO — inclui o texto do "Outro" (sem ele o Google rejeita a resposta)
+// ============================================================
+function getOutroTexto(name) {
+    var otherInput = document.querySelector('[data-other="' + name + '"]');
+    return otherInput ? otherInput.value.trim() : '';
+}
 function validateStep(stepNum) {
-    const step = document.getElementById('step' + stepNum);
-    const fields = step.querySelectorAll('.field[data-required]');
-    let valid = true;
-
-    fields.forEach(field => {
+    var step = document.getElementById('step' + stepNum);
+    var fields = step.querySelectorAll('.field[data-required]');
+    var valid = true;
+    fields.forEach(function (field) {
         field.classList.remove('error');
-        const type = field.dataset.type;
-
+        var type = field.dataset.type;
         if (type === 'radio') {
-            const name = field.querySelector('.option-group').dataset.name;
-            const checked = field.querySelector('input[name="' + name + '"]:checked');
+            var name = field.querySelector('.option-group').dataset.name;
+            var checked = field.querySelector('input[name="' + name + '"]:checked');
             if (!checked) { field.classList.add('error'); valid = false; }
+            else if (checked.value === '__other__' && !getOutroTexto(name)) { field.classList.add('error'); valid = false; }
         } else if (type === 'checkbox') {
-            const name = field.querySelector('.option-group').dataset.name;
-            const checked = field.querySelectorAll('input[name="' + name + '"]:checked');
-            if (checked.length === 0) { field.classList.add('error'); valid = false; }
+            var nomeGrupo = field.querySelector('.option-group').dataset.name;
+            var marcados = field.querySelectorAll('input[name="' + nomeGrupo + '"]:checked');
+            if (marcados.length === 0) { field.classList.add('error'); valid = false; }
+            else marcados.forEach(function (cb) {
+                if (cb.value === '__other__' && !getOutroTexto(nomeGrupo)) { field.classList.add('error'); valid = false; }
+            });
         } else {
-            const input = field.querySelector('input, textarea');
+            var input = field.querySelector('input, textarea');
             if (input && !input.value.trim()) { field.classList.add('error'); valid = false; }
             if (input && input.type === 'email' && input.value.trim()) {
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) { field.classList.add('error'); valid = false; }
             }
         }
     });
-
     return valid;
 }
-
 function validateAndGo(from, to) {
     if (validateStep(from)) goStep(to);
     else {
-        const firstError = document.querySelector('#step' + from + ' .field.error');
+        var firstError = document.querySelector('#step' + from + ' .field.error');
         if (firstError) firstError.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
 }
-
-function getCheckboxValues(name) {
-    const checked = document.querySelectorAll('input[name="' + name + '"]:checked');
-    const values = [];
-    checked.forEach(cb => {
-        if (cb.value === '__other__') {
-            const otherInput = document.querySelector('[data-other="' + name + '"]');
-            if (otherInput && otherInput.value.trim()) values.push(otherInput.value.trim());
-        } else {
-            values.push(cb.value);
-        }
-    });
-    return values;
-}
-
 function getRadioValue(name) {
-    const checked = document.querySelector('input[name="' + name + '"]:checked');
+    var checked = document.querySelector('input[name="' + name + '"]:checked');
     if (!checked) return '';
-    if (checked.value === '__other__') {
-        const otherInput = document.querySelector('[data-other="' + name + '"]');
-        return otherInput && otherInput.value.trim() ? otherInput.value.trim() : '';
-    }
+    if (checked.value === '__other__') return getOutroTexto(name);
     return checked.value;
 }
+function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
 
+// ============================================================
+// COLETA — monta { entryId: valor } para o Forms e um objeto legível
+//
+// "Outro" no Google Forms exige formato especial:
+//   entry.X=__other_option__  +  entry.X.other_option_response=<texto>
+// Mandar o texto livre no lugar da opção faz o Google devolver HTTP 400 e
+// DESCARTAR a resposta inteira quando a pergunta é obrigatória.
+// ============================================================
+function coletar() {
+    var E = FORM_ENTRIES;
+    var payload = {};
+    var legivel = {};
+    function set(entry, valor, rotulo) {
+        if (valor === undefined || valor === null || valor === '') return;
+        payload[entry] = valor;
+        if (rotulo) legivel[rotulo] = Array.isArray(valor) ? valor.join(' | ') : valor;
+    }
+
+    set(E.nome, val('nome'), 'Nome');
+    set(E.nacionalidade, val('nacionalidade'), 'Nacionalidade');
+    set(E.cidade, val('cidade'), 'Cidade - Estado');
+    set(E.telefone, val('telefone'), 'Telefone');
+    set(E.email, val('email'), 'E-mail');
+    set(E.mercado_trad, getRadioValue('mercado_trad'), 'Investe tradicional');
+    set(E.investe_cripto, getRadioValue('investe_cripto'), 'Investe cripto');
+    set(E.tempo_cripto, val('tempo_cripto'), 'Tempo em cripto');
+    set(E.nivel, getRadioValue('nivel'), 'Nível');
+    set(E.alocacao, getRadioValue('alocacao'), 'Alocação pretendida');
+    set(E.risco, getRadioValue('risco'), 'Tolerância a risco');
+
+    // Múltipla escolha com "Outro"
+    function coletarCheckbox(name, entry, rotulo) {
+        var vals = [], legiveis = [], outro = '';
+        document.querySelectorAll('input[name="' + name + '"]:checked').forEach(function (cb) {
+            if (cb.value === '__other__') {
+                var t = getOutroTexto(name);
+                if (t) { vals.push('__other_option__'); outro = t; legiveis.push(t); }
+            } else { vals.push(cb.value); legiveis.push(cb.value); }
+        });
+        if (vals.length) {
+            payload[entry] = vals.slice();
+            if (outro) payload[entry + '.other_option_response'] = outro;
+            legivel[rotulo] = legiveis.join(' | ');
+        }
+    }
+    coletarCheckbox('objetivos', E.objetivos, 'Objetivos');
+    coletarCheckbox('dificuldade', E.dificuldade, 'Dificuldades');
+
+    // Escolha única com "Outro"
+    var origemChecked = document.querySelector('input[name="origem"]:checked');
+    if (origemChecked && origemChecked.value === '__other__') {
+        var origemOutro = getOutroTexto('origem');
+        if (origemOutro) {
+            payload[E.origem] = '__other_option__';
+            payload[E.origem + '.other_option_response'] = origemOutro;
+            legivel['Origem'] = origemOutro;
+        }
+    } else {
+        set(E.origem, getRadioValue('origem'), 'Origem');
+    }
+
+    set(E.info_adicional, val('info_adicional'), 'Info adicional');
+    set(E.declaracao, getRadioValue('declaracao'), 'Declaração');
+
+    return { payload: payload, legivel: legivel };
+}
+
+// ============================================================
+// CAMINHO 1 — Google Forms (fetch no-cors + iframe redundante)
+// ============================================================
+function payloadParaBody(payload) {
+    var partes = [];
+    Object.keys(payload).forEach(function (entry) {
+        var v = payload[entry];
+        var vals = Array.isArray(v) ? v : [v];
+        vals.forEach(function (x) { if (x !== '' && x != null) partes.push(encodeURIComponent(entry) + '=' + encodeURIComponent(x)); });
+    });
+    return partes.join('&');
+}
+function enviarParaFormFetch(payload) {
+    try {
+        return fetch(GOOGLE_FORM_ACTION, { method: 'POST', mode: 'no-cors',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: payloadParaBody(payload) }).catch(function () {});
+    } catch (e) { return Promise.resolve(); }
+}
+function enviarParaFormIframe(payload) {
+    try {
+        var form = document.getElementById('googleForm');
+        form.innerHTML = '';
+        Object.keys(payload).forEach(function (entry) {
+            var v = payload[entry];
+            var vals = Array.isArray(v) ? v : [v];
+            vals.forEach(function (x) {
+                if (x !== '' && x != null) {
+                    var inp = document.createElement('input');
+                    inp.type = 'hidden'; inp.name = entry; inp.value = x;
+                    form.appendChild(inp);
+                }
+            });
+        });
+        form.submit();
+    } catch (e) {}
+}
+
+// ============================================================
+// CAMINHO 2 — registro verificável (Apps Script). Único caminho cuja
+// resposta conseguimos LER — dele vem a confirmação real.
+// ============================================================
+function enviarParaScript(reg, timeoutMs) {
+    if (!TEM_ENDPOINT) return Promise.resolve({ ok: false, semEndpoint: true });
+    var ctrl = ('AbortController' in window) ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs || 12000) : null;
+    return fetch(ENDPOINT_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain;charset=utf-8'},   // text/plain evita preflight CORS
+        body: JSON.stringify(reg),
+        signal: ctrl ? ctrl.signal : undefined
+    }).then(function (r) { return r.json(); }).then(function (resp) {
+        if (timer) clearTimeout(timer);
+        return (resp && resp.ok) ? resp : { ok: false };
+    }).catch(function () { if (timer) clearTimeout(timer); return { ok: false }; });
+}
+
+// ============================================================
+// FILA DE REENVIO — formulário não confirmado fica guardado e é reenviado
+// sozinho na próxima visita ou quando a conexão voltar (dedupe pelo id).
+// ============================================================
+var FILA_KEY = "ascen_cg_fila_envio";
+function lerFila() { try { return JSON.parse(localStorage.getItem(FILA_KEY) || "[]"); } catch (e) { return []; } }
+function salvarFila(f) { try { localStorage.setItem(FILA_KEY, JSON.stringify(f)); } catch (e) {} }
+function enfileirar(reg) { var f = lerFila(); f.push(reg); salvarFila(f); }
+function removerDaFila(id) { salvarFila(lerFila().filter(function (r) { return r.id !== id; })); }
+function atualizarNaFila(reg) { salvarFila(lerFila().map(function (r) { return r.id === reg.id ? reg : r; })); }
+var _processandoFila = false;
+function processarFila() {
+    if (!TEM_ENDPOINT || _processandoFila) return;
+    var fila = lerFila();
+    if (!fila.length) return;
+    _processandoFila = true;
+    var restantes = [];
+    var cadeia = Promise.resolve();
+    fila.forEach(function (reg) {
+        cadeia = cadeia.then(function () {
+            return enviarParaScript(reg, 25000).then(function (resp) {
+                if (!resp.ok) {
+                    reg._tentativas = (reg._tentativas || 0) + 1;
+                    if (reg._tentativas < 12) restantes.push(reg);   // desiste após 12 tentativas
+                }
+            });
+        });
+    });
+    cadeia.then(function () { salvarFila(restantes); _processandoFila = false; });
+}
+window.addEventListener('online', processarFila);
+
+// ============================================================
+// CAMINHO 3 — backup local (localStorage). À prova de falhas.
+// ============================================================
+var LS_KEY = "ascen_cg_respostas";
+function gravarLocal(legivel) {
+    try {
+        var reg = Object.assign({ _quando: new Date().toISOString() }, legivel);
+        var lista = [];
+        try { lista = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { lista = []; }
+        lista.push(reg);
+        localStorage.setItem(LS_KEY, JSON.stringify(lista));
+        return true;
+    } catch (e) { return false; }
+}
+function lerLocal() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { return []; } }
+function baixarBackupCSV() {
+    var lista = lerLocal();
+    if (!lista.length) { alert("Nenhuma resposta gravada neste dispositivo."); return; }
+    var cols = ["_quando"].concat(CAMPOS_ORDEM);
+    var esc = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+    var linhas = [cols.join(',')];
+    lista.forEach(function (r) { linhas.push(cols.map(function (c) { return esc(r[c]); }).join(',')); });
+    var blob = new Blob(["﻿" + linhas.join("\r\n")], {type: "text/csv;charset=utf-8"});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "consultoria-gratuita-backup-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+}
+function limparBackup() { if (confirm("Apagar TODAS as respostas deste dispositivo? Baixe o CSV antes.")) { localStorage.removeItem(LS_KEY); renderAdmin(); } }
+
+// ============================================================
+// RASCUNHO — iOS/Safari recarrega a página com facilidade (troca de app,
+// pressão de memória). Salva o que foi digitado e restaura ao voltar.
+// Limpa após o envio. Expira em 24h.
+// ============================================================
+var RASCUNHO_KEY = "ascen_cg_rascunho";
+var _passoAtual = 1;
+function salvarRascunho() {
+    try {
+        var r = { _quando: new Date().toISOString(), passo: _passoAtual, textos: {}, outros: {}, marcados: [] };
+        document.querySelectorAll('input[id], textarea[id]').forEach(function (el) { if (el.value) r.textos[el.id] = el.value; });
+        document.querySelectorAll('.other-input[data-other]').forEach(function (el) { if (el.value) r.outros[el.getAttribute('data-other')] = el.value; });
+        document.querySelectorAll('.option-item input:checked').forEach(function (el) { r.marcados.push([el.name, el.value]); });
+        localStorage.setItem(RASCUNHO_KEY, JSON.stringify(r));
+    } catch (e) {}
+}
+function limparRascunho() { try { localStorage.removeItem(RASCUNHO_KEY); } catch (e) {} }
+function restaurarRascunho() {
+    var r = null;
+    try { r = JSON.parse(localStorage.getItem(RASCUNHO_KEY) || "null"); } catch (e) { return; }
+    if (!r || !r._quando) return;
+    if (new Date().getTime() - new Date(r._quando).getTime() > 24 * 60 * 60 * 1000) { limparRascunho(); return; }
+    try {
+        Object.keys(r.textos || {}).forEach(function (id) { var el = document.getElementById(id); if (el) el.value = r.textos[id]; });
+        Object.keys(r.outros || {}).forEach(function (name) { var el = document.querySelector('[data-other="' + name + '"]'); if (el) el.value = r.outros[name]; });
+        (r.marcados || []).forEach(function (par) {
+            var el = document.querySelector('input[name="' + par[0] + '"][value="' + par[1] + '"]');
+            if (el && !el.checked) { el.checked = true; el.dispatchEvent(new Event('change')); }
+        });
+        if (r.passo && r.passo >= 2 && r.passo <= 4) goStep(r.passo);
+        mostrarAvisoRascunho();
+    } catch (e) {}
+}
+// Aparelho compartilhado: avisa que retomou e oferece recomeço limpo
+function mostrarAvisoRascunho() {
+    if (document.getElementById('avisoRascunho')) return;
+    var div = document.createElement('div');
+    div.id = 'avisoRascunho';
+    div.className = 'card';
+    div.style.cssText = 'padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap';
+    var span = document.createElement('span');
+    span.style.cssText = 'font-size:13px;color:var(--text-sec)';
+    span.textContent = 'Retomamos seu preenchimento de onde parou.';
+    var b = document.createElement('button');
+    b.className = 'btn btn-secondary';
+    b.style.cssText = 'padding:10px 16px;font-size:13px';
+    b.textContent = '↺ Começar do zero';
+    b.onclick = function () { limparRascunho(); window.location.reload(); };
+    div.appendChild(span); div.appendChild(b);
+    var header = document.querySelector('.header');
+    if (header && header.parentNode) header.parentNode.insertBefore(div, header.nextSibling);
+}
+document.addEventListener('input', function (ev) { var t = ev.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) salvarRascunho(); });
+document.addEventListener('change', function (ev) { var t = ev.target; if (t && t.tagName === 'INPUT') salvarRascunho(); });
+
+// ============================================================
+// REDE DE SEGURANÇA iOS — se a página for fechada/minimizada com envio em
+// andamento, dispara um beacon (sobrevive ao fechamento; o servidor
+// deduplica pelo id, então nunca gera registro dobrado).
+// ============================================================
+var _regEmVoo = null;
+function beaconEmergencia() {
+    try {
+        if (!TEM_ENDPOINT || !navigator.sendBeacon) return;
+        var pendentes = _regEmVoo ? [_regEmVoo] : lerFila();
+        pendentes.forEach(function (reg) {
+            var blob = new Blob([JSON.stringify(reg)], { type: 'text/plain;charset=utf-8' });
+            navigator.sendBeacon(ENDPOINT_URL, blob);
+        });
+    } catch (e) {}
+}
+window.addEventListener('pagehide', beaconEmergencia);
+document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') beaconEmergencia(); });
+
+// ============================================================
+// SUBMIT
+// ============================================================
+function setStatus(msg) { var n = document.getElementById('sendStatus'); if (n) n.textContent = msg || ''; }
+function montarTelaSucesso(confirmado) {
+    var icon = document.getElementById('successIcon');
+    var title = document.getElementById('successTitle');
+    var text = document.getElementById('successText');
+    if (!icon || !title || !text) return;
+    if (confirmado || !TEM_ENDPOINT) {
+        icon.textContent = '✓';
+        icon.style.background = 'linear-gradient(135deg,var(--orange),#e05500)';
+        title.textContent = 'Formulário Enviado!';
+        text.innerHTML = 'Obrigado pelo seu interesse na Ascen Cripto. Nossa equipe irá analisar seu perfil e entrará em contato com você em breve. Se preferir adiantar, fale com a gente pelo WhatsApp abaixo.';
+    } else {
+        icon.textContent = '!';
+        icon.style.background = 'linear-gradient(135deg,#f59e0b,#ef4444)';
+        title.textContent = 'Falta 1 passo importante';
+        text.innerHTML = 'Sua conexão não nos deixou <strong>confirmar</strong> o envio automático (vamos tentar de novo sozinhos). Para garantir sua vaga na análise, <strong>fale com a gente pelo WhatsApp agora</strong>.';
+    }
+}
+function prepararCTA(legivel) {
+    var corte = function (v) { v = String(v); return v.length > 300 ? v.slice(0, 300) + "… (resto já registrado)" : v; };
+    var msg = "🟠 *Consultoria Gratuita — Ascen Cripto*\n\n";
+    CAMPOS_ORDEM.forEach(function (c) { if (legivel[c]) msg += "*" + c + ":* " + corte(legivel[c]) + "\n"; });
+    msg += "\nAcabei de preencher o formulário da consultoria gratuita.";
+    var btn = document.getElementById('wppBtn');
+    if (btn) btn.href = WHATSAPP_BASE + "?text=" + encodeURIComponent(msg);
+}
+
+var _enviando = false;
 function submitForm() {
+    if (_enviando) return;
     if (!validateStep(4)) return;
+    _enviando = true;
+    var btn = document.getElementById('submitBtn');
+    var btnVoltar = document.querySelector('#step4 .btn-secondary');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    if (btnVoltar) btnVoltar.disabled = true;
+    setStatus('Registrando suas respostas…');
 
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
+    var coletado = coletar();
+    var payload = coletado.payload;
+    var legivel = coletado.legivel;
+    _ultimaResposta = legivel;
+    prepararCTA(legivel);
 
-    const data = {
-        nome: document.getElementById('nome').value.trim(),
-        nacionalidade: document.getElementById('nacionalidade').value.trim(),
-        cidade: document.getElementById('cidade').value.trim(),
-        telefone: document.getElementById('telefone').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        mercado_trad: getRadioValue('mercado_trad'),
-        investe_cripto: getRadioValue('investe_cripto'),
-        tempo_cripto: document.getElementById('tempo_cripto').value.trim(),
-        nivel: getRadioValue('nivel'),
-        alocacao: getRadioValue('alocacao'),
-        risco: getRadioValue('risco'),
-        objetivos: getCheckboxValues('objetivos'),
-        dificuldade: getCheckboxValues('dificuldade'),
-        origem: getRadioValue('origem'),
-        info_adicional: document.getElementById('info_adicional').value.trim(),
-        declaracao: getRadioValue('declaracao')
+    var reg = {
+        id: 'cg-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+        quando: new Date().toISOString(),
+        legivel: legivel,
+        payload: payload,
+        form_ja_enviado: false
     };
 
-    const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSelc-2uGZE1mvHtwtOCPqC4J7QAHlXtTrgjDxiFdnbL45KtpQ/formResponse';
+    // 1) Backup local imediato. Com endpoint, já entra na fila: se o cliente
+    //    fechar a página no meio do envio (comum no iOS), sobrevive.
+    gravarLocal(legivel);
+    if (TEM_ENDPOINT) { enfileirar(reg); _regEmVoo = reg; }
 
-    // Build URLSearchParams for proper encoding
-    const params = new URLSearchParams();
-    params.append('entry.979645034', data.nome);
-    params.append('entry.810042357', data.nacionalidade);
-    params.append('entry.1230689849', data.cidade);
-    params.append('entry.685562726', data.telefone);
-    params.append('entry.1881763924', data.email);
-    params.append('entry.878876579', data.mercado_trad);
-    params.append('entry.1611461355', data.investe_cripto);
-    params.append('entry.1980910773', data.tempo_cripto);
-    params.append('entry.1707582076', data.nivel);
-    params.append('entry.1442964842', data.alocacao);
-    params.append('entry.1579919800', data.risco);
-
-    // Checkboxes: append each value separately
-    data.objetivos.forEach(valor => params.append('entry.1132284262', valor));
-    data.dificuldade.forEach(valor => params.append('entry.2117605384', valor));
-
-    params.append('entry.695452647', data.origem);
-    params.append('entry.671754045', data.info_adicional || 'Nenhuma');
-    params.append('entry.652355824', data.declaracao);
-
-    // Use fetch with no-cors mode to submit the form data
-    fetch(GOOGLE_FORM_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString()
-    })
-    .then(() => {
-        // With no-cors we can't read the response, but the data is sent
+    var finalizado = false;
+    function concluir(confirmado) {
+        if (finalizado) return;
+        finalizado = true;
+        if (confirmado) removerDaFila(reg.id);
+        _regEmVoo = null;
+        montarTelaSucesso(confirmado);
         goStep(5);
-    })
-    .catch(error => {
-        console.error('Erro ao enviar:', error);
-        alert('Ocorreu um erro ao enviar. Tente novamente.');
-    })
-    .finally(() => {
-        btn.disabled = false;
-        btn.textContent = 'Enviar Formulário ✓';
+        limparRascunho();
+        var aviso = document.getElementById('avisoRascunho');
+        if (aviso) aviso.remove();
+        setStatus('');
+        btn.disabled = false; btn.textContent = 'Enviar Formulário ✓';
+        if (btnVoltar) btnVoltar.disabled = false;
+        _enviando = false;
+    }
+
+    // 2) Google Forms — fetch cego + iframe redundante (os dois caminhos que
+    //    hoje já existem, agora com o payload no formato que o Google aceita)
+    enviarParaFormFetch(payload);
+    enviarParaFormIframe(payload);
+    reg.form_ja_enviado = true;
+    if (TEM_ENDPOINT) atualizarNaFila(reg);
+
+    // 3) Sem Apps Script configurado: o Forms é o único caminho. Mostra a tela
+    //    de sucesso depois de dar tempo do POST sair.
+    if (!TEM_ENDPOINT) { setTimeout(function () { concluir(true); }, 1200); return; }
+
+    // 3') Com Apps Script: confirmação real, com fallback honesto.
+    enviarParaScript(reg, 25000).then(function (resp) {
+        if (finalizado) return;
+        concluir(!!resp.ok);
     });
+    setTimeout(function () { if (!finalizado) setStatus('Quase lá — confirmando seu registro com segurança…'); }, 8000);
+    setTimeout(function () { if (!finalizado) setStatus('Só mais um instante…'); }, 18000);
+    setTimeout(function () { if (!finalizado) concluir(false); }, 30000);   // nunca prende o cliente
 }
+
+// ============================================================
+// ADMIN
+// ============================================================
+function renderAdmin() {
+    var lista = lerLocal();
+    var pendentes = lerFila().length;
+    document.getElementById('adminCount').textContent = lista.length + " resposta(s) neste dispositivo" +
+        (pendentes ? " — " + pendentes + " aguardando reenvio" : "");
+    var eh = function (v) { return String(v == null ? '—' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    var rows = lista.slice().reverse().map(function (r) {
+        var q = (r._quando || '').replace('T', ' ').slice(0, 16);
+        return '<tr><td>' + eh(q) + '</td><td>' + eh(r['Nome']) + '</td><td>' + eh(r['E-mail']) + '</td><td>' + eh(r['Telefone']) + '</td></tr>';
+    }).join('');
+    document.getElementById('adminTable').innerHTML = lista.length
+        ? '<table class="admin-table"><thead><tr><th>Quando</th><th>Nome</th><th>E-mail</th><th>Telefone</th></tr></thead><tbody>' + rows + '</tbody></table>'
+        : '<p class="hint">Nenhuma resposta gravada ainda.</p>';
+}
+if (/[?&]admin=1\b/.test(window.location.search)) {
+    document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
+    document.getElementById('stepAdmin').classList.add('active');
+    renderAdmin();
+} else {
+    restaurarRascunho();
+}
+processarFila();
 </script>
 </body>
 </html>
