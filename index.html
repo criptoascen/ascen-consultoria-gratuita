@@ -136,6 +136,23 @@
         .field.error input,.field.error textarea{border-color:#f87171}
         .field.error .error-msg{display:block}
     </style>
+<!-- Meta Pixel Code (Pixel Ascen Cripto) -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2542425419607619');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 <div class="bg"></div>
@@ -676,6 +693,13 @@ function coletar() {
 }
 
 // ============================================================
+// PIXEL DA META — eventos de conversao. Nunca quebra o formulario.
+// ============================================================
+function pixelEvento(nome) {
+    try { if (typeof window.fbq === 'function') window.fbq('track', nome); } catch (e) {}
+}
+
+// ============================================================
 // CAPTURA PARCIAL — dispara ao concluir a Seção 1. Quem abandona depois
 // ainda vira lead. Só existe com o Apps Script no ar (o Google Forms não
 // aceita resposta pela metade em pergunta obrigatória).
@@ -684,6 +708,7 @@ var _parcialEnviado = false;
 function enviarParcial() {
     if (!TEM_ENDPOINT || _parcialEnviado || ehRobo()) return;
     _parcialEnviado = true;
+    pixelEvento('Lead');
     enviarParaScript({
         id: leadId() + '-parcial',
         lead: leadId(),
@@ -979,6 +1004,7 @@ function submitForm() {
         _regEmVoo = null;
         montarTelaSucesso(confirmado);
         goStep(5);
+        pixelEvento('CompleteRegistration');
         limparRascunho();
         limparLeadId();   // "Enviar outra resposta" começa um lead novo
         var aviso = document.getElementById('avisoRascunho');
