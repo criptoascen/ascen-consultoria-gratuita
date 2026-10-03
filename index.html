@@ -136,6 +136,15 @@
         .field.error input,.field.error textarea{border-color:#f87171}
         .field.error .error-msg{display:block}
     </style>
+<!-- Google tag (gtag.js) - Google Analytics Ascen Cripto -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1W97258VD8"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-1W97258VD8');
+</script>
+<!-- End Google tag -->
 <!-- Meta Pixel Code (Pixel Ascen Cripto) -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -699,6 +708,11 @@ function pixelEvento(nome) {
     try { if (typeof window.fbq === 'function') window.fbq('track', nome); } catch (e) {}
 }
 
+// Google Analytics: eventos de lead. Nunca quebra o formulario.
+function gaEvento(nome, params) {
+    try { if (typeof window.gtag === 'function') window.gtag('event', nome, params || {}); } catch (e) {}
+}
+
 // ============================================================
 // CAPTURA PARCIAL — dispara ao concluir a Seção 1. Quem abandona depois
 // ainda vira lead. Só existe com o Apps Script no ar (o Google Forms não
@@ -709,6 +723,7 @@ function enviarParcial() {
     if (!TEM_ENDPOINT || _parcialEnviado || ehRobo()) return;
     _parcialEnviado = true;
     pixelEvento('Lead');
+    gaEvento('lead_parcial', { form_name: 'consultoria_gratuita' });
     enviarParaScript({
         id: leadId() + '-parcial',
         lead: leadId(),
@@ -1005,6 +1020,7 @@ function submitForm() {
         montarTelaSucesso(confirmado);
         goStep(5);
         pixelEvento('CompleteRegistration');
+        gaEvento('generate_lead', { form_name: 'consultoria_gratuita' });
         limparRascunho();
         limparLeadId();   // "Enviar outra resposta" começa um lead novo
         var aviso = document.getElementById('avisoRascunho');
