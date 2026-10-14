@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico Gratuito - Ascen Cripto</title>
-    <meta name="description" content="Formulário do diagnóstico gratuito da Ascen Cripto: conte seu momento no mercado de criptoativos e nossa equipe analisa seu perfil para a consultoria Ascen Strategy.">
-    <meta property="og:title" content="Diagnóstico Gratuito - Ascen Cripto">
+    <title>Consultoria Gratuita - Ascen Cripto</title>
+    <meta name="description" content="Formulário da consultoria gratuita da Ascen Cripto: conte seu momento no mercado de criptoativos e nossa equipe analisa seu perfil para a consultoria Ascen Strategy.">
+    <meta property="og:title" content="Consultoria Gratuita - Ascen Cripto">
     <meta property="og:description" content="Conte seu momento no mercado de criptoativos e nossa equipe analisa seu perfil.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://consultoriagratuita.ascencripto.com.br/">
@@ -183,8 +183,8 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
     <!-- STEP 1: Intro -->
     <div class="step active" id="step1">
         <div class="card intro">
-            <div class="sec-label">Diagnóstico Gratuito</div>
-            <div class="sec-title">Formulário do Diagnóstico Gratuito</div>
+            <div class="sec-label">Consultoria Gratuita</div>
+            <div class="sec-title">Formulário de Consultoria em Criptoativos</div>
             <p class="sec-desc">Este formulário faz parte de um <strong>processo de seleção</strong>: atendemos os perfis com maior alinhamento à nossa metodologia de análise. O preenchimento não assegura o atendimento, mas todo caso enviado é analisado com critério pela nossa equipe.</p>
         </div>
         <div class="nav-row">
@@ -390,7 +390,7 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
             <div class="success-title" id="successTitle">Formulário Enviado!</div>
             <p class="success-text" id="successText">Obrigado pelo seu interesse na Ascen Cripto. Nossa equipe irá analisar seu perfil e entrará em contato com você em breve.</p>
             <br>
-            <a id="wppBtn" href="https://wa.me/5511917536554?text=Ol%C3%A1%21%20Acabei%20de%20preencher%20o%20formul%C3%A1rio%20do%20diagn%C3%B3stico%20gratuito%20da%20Ascen%20Cripto." target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#16a34a);text-decoration:none;max-width:360px;margin:0 auto 14px">Falar com a equipe no WhatsApp</a>
+            <a id="wppBtn" href="https://wa.me/5511917536554?text=Ol%C3%A1%21%20Acabei%20de%20preencher%20o%20formul%C3%A1rio%20da%20consultoria%20gratuita%20da%20Ascen%20Cripto." target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#16a34a);text-decoration:none;max-width:360px;margin:0 auto 14px">Falar com a equipe no WhatsApp</a>
             <br>
             <button class="btn btn-secondary" onclick="window.location.reload()" style="max-width:360px;margin:0 auto;display:block">↻ Enviar outra resposta</button>
         </div>
@@ -409,7 +409,7 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
             <div id="adminTable"></div>
         </div>
     </div>
-    <p class="aviso-legal">Diagnóstico com finalidade educacional. Não é recomendação de investimento nem promessa de resultado; criptoativos envolvem risco, inclusive de perda total. A Ascen Cripto nunca pede sua frase de recuperação, senhas ou acesso aos seus fundos.</p>
+    <p class="aviso-legal">Consultoria gratuita com finalidade educacional. Não é recomendação de investimento nem promessa de resultado; criptoativos envolvem risco, inclusive de perda total. A Ascen Cripto nunca pede sua frase de recuperação, senhas ou acesso aos seus fundos.</p>
 </div>
 
 <!-- Iframe + form ocultos: método redundante de envio ao Google Forms -->
@@ -979,9 +979,9 @@ function montarTelaSucesso(confirmado) {
 }
 function prepararCTA(legivel) {
     var corte = function (v) { v = String(v); return v.length > 300 ? v.slice(0, 300) + "… (resto já registrado)" : v; };
-    var msg = "🟠 *Diagnóstico gratuito - Ascen Cripto*\n\n";
+    var msg = "*Consultoria gratuita - Ascen Cripto*\n\n";
     CAMPOS_ORDEM.forEach(function (c) { if (legivel[c]) msg += "*" + c + ":* " + corte(legivel[c]) + "\n"; });
-    msg += "\nAcabei de preencher o formulário do diagnóstico gratuito.";
+    msg += "\nAcabei de preencher o formulário da consultoria gratuita.";
     var btn = document.getElementById('wppBtn');
     if (btn) btn.href = WHATSAPP_BASE + "?text=" + encodeURIComponent(msg);
 }
