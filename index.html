@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultoria Gratuita — Ascen Cripto</title>
+    <title>Diagnóstico Gratuito - Ascen Cripto</title>
+    <meta name="description" content="Formulário do diagnóstico gratuito da Ascen Cripto: conte seu momento no mercado de criptoativos e nossa equipe analisa seu perfil para a consultoria Ascen Strategy.">
+    <meta property="og:title" content="Diagnóstico Gratuito - Ascen Cripto">
+    <meta property="og:description" content="Conte seu momento no mercado de criptoativos e nossa equipe analisa seu perfil.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://consultoriagratuita.ascencripto.com.br/">
+    <meta property="og:image" content="https://consultoriagratuita.ascencripto.com.br/logo-banner.png">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#0f1e28">
     <!-- Nomes de arquivo NOVOS, não só ?v=. O Chrome guarda favicon num banco
          próprio por perfil e pede /favicon.ico sozinho, sem query — então a
@@ -135,6 +142,7 @@
         .error-msg{color:#f87171;font-size:12px;margin-top:6px;display:none}
         .field.error input,.field.error textarea{border-color:#f87171}
         .field.error .error-msg{display:block}
+        .aviso-legal{max-width:560px;margin:8px auto 32px;padding:0 16px;font-size:11.5px;line-height:1.6;color:rgba(255,255,255,.45);text-align:center}
     </style>
 <!-- Google tag (gtag.js) - Google Analytics Ascen Cripto -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1W97258VD8"></script>
@@ -175,9 +183,9 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
     <!-- STEP 1: Intro -->
     <div class="step active" id="step1">
         <div class="card intro">
-            <div class="sec-label">Consultoria Gratuita</div>
-            <div class="sec-title">Formulário de Consultoria em Criptoativos</div>
-            <p class="sec-desc">Este formulário faz parte de um processo de <strong>curadoria estratégica</strong>. Devido ao nosso compromisso com a entrega de resultados reais, selecionamos apenas os perfis que apresentam maior alinhamento com a nossa metodologia de análise. O preenchimento não garante o atendimento, mas garante que seu caso será analisado criteriosamente por nossa equipe.</p>
+            <div class="sec-label">Diagnóstico Gratuito</div>
+            <div class="sec-title">Formulário do Diagnóstico Gratuito</div>
+            <p class="sec-desc">Este formulário faz parte de um <strong>processo de seleção</strong>: atendemos os perfis com maior alinhamento à nossa metodologia de análise. O preenchimento não assegura o atendimento, mas todo caso enviado é analisado com critério pela nossa equipe.</p>
         </div>
         <div class="nav-row">
             <button class="btn btn-primary" onclick="goStep(2)">Começar →</button>
@@ -382,7 +390,7 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
             <div class="success-title" id="successTitle">Formulário Enviado!</div>
             <p class="success-text" id="successText">Obrigado pelo seu interesse na Ascen Cripto. Nossa equipe irá analisar seu perfil e entrará em contato com você em breve.</p>
             <br>
-            <a id="wppBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#16a34a);text-decoration:none;max-width:360px;margin:0 auto 14px">💬 Falar com a equipe no WhatsApp</a>
+            <a id="wppBtn" href="https://wa.me/5511917536554?text=Ol%C3%A1%21%20Acabei%20de%20preencher%20o%20formul%C3%A1rio%20do%20diagn%C3%B3stico%20gratuito%20da%20Ascen%20Cripto." target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#25D366,#16a34a);text-decoration:none;max-width:360px;margin:0 auto 14px">Falar com a equipe no WhatsApp</a>
             <br>
             <button class="btn btn-secondary" onclick="window.location.reload()" style="max-width:360px;margin:0 auto;display:block">↻ Enviar outra resposta</button>
         </div>
@@ -401,6 +409,7 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
             <div id="adminTable"></div>
         </div>
     </div>
+    <p class="aviso-legal">Diagnóstico com finalidade educacional. Não é recomendação de investimento nem promessa de resultado; criptoativos envolvem risco, inclusive de perda total. A Ascen Cripto nunca pede sua frase de recuperação, senhas ou acesso aos seus fundos.</p>
 </div>
 
 <!-- Iframe + form ocultos: método redundante de envio ao Google Forms -->
@@ -965,14 +974,14 @@ function montarTelaSucesso(confirmado) {
         icon.textContent = '!';
         icon.style.background = 'linear-gradient(135deg,#f59e0b,#ef4444)';
         title.textContent = 'Falta 1 passo importante';
-        text.innerHTML = 'Sua conexão não nos deixou <strong>confirmar</strong> o envio automático (vamos tentar de novo sozinhos). Para garantir sua vaga na análise, <strong>fale com a gente pelo WhatsApp agora</strong>.';
+        text.innerHTML = 'Sua conexão não nos deixou <strong>confirmar</strong> o envio automático (vamos tentar de novo sozinhos). Para não perder sua vaga na análise, <strong>fale com a gente pelo WhatsApp agora</strong>.';
     }
 }
 function prepararCTA(legivel) {
     var corte = function (v) { v = String(v); return v.length > 300 ? v.slice(0, 300) + "… (resto já registrado)" : v; };
-    var msg = "🟠 *Consultoria Gratuita — Ascen Cripto*\n\n";
+    var msg = "🟠 *Diagnóstico gratuito - Ascen Cripto*\n\n";
     CAMPOS_ORDEM.forEach(function (c) { if (legivel[c]) msg += "*" + c + ":* " + corte(legivel[c]) + "\n"; });
-    msg += "\nAcabei de preencher o formulário da consultoria gratuita.";
+    msg += "\nAcabei de preencher o formulário do diagnóstico gratuito.";
     var btn = document.getElementById('wppBtn');
     if (btn) btn.href = WHATSAPP_BASE + "?text=" + encodeURIComponent(msg);
 }
