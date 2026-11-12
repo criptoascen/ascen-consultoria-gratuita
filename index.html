@@ -143,6 +143,74 @@
         .field.error input,.field.error textarea{border-color:#f87171}
         .field.error .error-msg{display:block}
         .aviso-legal{max-width:560px;margin:8px auto 32px;padding:0 16px;font-size:11.5px;line-height:1.6;color:rgba(255,255,255,.45);text-align:center}
+    
+        /* ===== Tema alinhado ao onboarding (nov/2026) ===== */
+        :root{--petrol-deep:#0a1a2e;--card-bg:rgba(58,74,90,0.55);--border:rgba(46,91,118,0.38);
+            --cobre:linear-gradient(180deg,#E9963F 0%,#D27829 45%,#AF520F 100%);--grad:linear-gradient(135deg,#ff6600,#c9a96e)}
+        body{background:#0a1a2e}
+        .bg{background:
+            radial-gradient(ellipse 70% 45% at 15% 0%,rgba(255,102,0,0.11),transparent 70%),
+            radial-gradient(ellipse 60% 55% at 90% 100%,rgba(46,91,118,0.34),transparent 70%),
+            radial-gradient(ellipse 40% 30% at 50% 12%,rgba(201,169,110,0.06),transparent 70%)}
+        .grid{background-image:linear-gradient(rgba(46,91,118,0.075) 1px,transparent 1px),linear-gradient(90deg,rgba(46,91,118,0.075) 1px,transparent 1px);
+            background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 85% 75% at 50% 35%,#000 35%,transparent 100%);mask-image:radial-gradient(ellipse 85% 75% at 50% 35%,#000 35%,transparent 100%)}
+        .bg::after{content:'';position:absolute;right:-4vw;bottom:-6vh;width:min(44vw,600px);height:min(38vw,520px);opacity:.05;
+            background:url("ascen-simbolo.png") no-repeat center/contain;-webkit-filter:grayscale(1) brightness(2.4);filter:grayscale(1) brightness(2.4)}
+        .header img{filter:drop-shadow(0 0 36px rgba(255,102,0,0.32))}
+        .card{background:linear-gradient(180deg,rgba(58,74,90,0.55),rgba(36,52,70,0.55));box-shadow:0 24px 60px rgba(0,0,0,0.38),inset 0 1px 0 rgba(255,255,255,0.05)}
+        .card.intro{border-left:4px solid var(--orange)}
+        .card.intro .sec-title{font-size:26px;line-height:1.25}
+        .sec-desc.sec-lead{color:var(--text);font-size:16px;margin-bottom:14px}
+        .sec-title em{font-style:normal;background:var(--cobre);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .sec-desc strong{color:var(--gold)}
+        input[type="text"],input[type="email"],input[type="tel"],textarea,.other-input{background:rgba(10,26,46,0.62)}
+        .option-item{background:rgba(10,26,46,0.45)}
+        .option-item.selected{background:rgba(255,102,0,0.09)}
+        .btn-primary,.success-icon{background:var(--grad)}
+        .btn-primary{box-shadow:0 6px 24px rgba(255,102,0,0.32)}
+        .btn-secondary{background:rgba(58,74,90,0.35)}
+        .progress .dot.active{background:var(--grad)}
+        .progress .dot.done{background:#2e5b76}
+    
+        /* ===== Abertura premium (passo 1) ===== */
+        body.intro .container{max-width:1180px;padding-left:28px;padding-right:28px}
+        body.intro .header{display:none}
+        body.intro .bg::after{display:none}
+        .aviso-legal{font-style:italic;font-size:10.5px}
+        .hero{display:grid;grid-template-columns:1.3fr .7fr;gap:48px;align-items:center;min-height:calc(100vh - 150px);padding:56px 0 28px}
+        .hero-logo-m{display:none}
+        .hero-eb{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange)}
+        .hero-h{font-size:58px;font-weight:800;line-height:1.04;letter-spacing:-1.5px;margin:16px 0 22px}
+        .hero-h em{font-style:normal;background:var(--cobre);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .hero-lead{font-size:19px;line-height:1.65;color:var(--text-sec)}
+        .hero-lead b{color:var(--text);font-weight:600}
+        .hero-card{margin:30px 0 26px;padding:18px 22px;border-radius:18px;border:1px solid var(--border);border-left:4px solid var(--orange);
+            background:linear-gradient(180deg,rgba(58,74,90,0.55),rgba(36,52,70,0.55));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+            box-shadow:0 20px 50px rgba(0,0,0,0.34);font-size:14px;line-height:1.6;color:var(--text-sec)}
+        .hero-card strong{color:var(--gold)}
+        .hero .btn-primary{width:100%;max-width:520px;margin-top:40px;padding:24px 40px;font-size:19px;border-radius:16px}
+        .hero-trust{display:flex;gap:34px;margin-top:34px;flex-wrap:wrap}
+        .hero-trust div{display:flex;flex-direction:column}
+        .hero-trust b{font-size:24px;font-weight:800;background:var(--cobre);-webkit-background-clip:text;background-clip:text;color:transparent}
+        .hero-trust span{font-size:12px;color:var(--text-sec);margin-top:2px}
+        .hero-art{position:relative;display:flex;align-items:center;justify-content:center}
+        .hero-art::before{content:'';position:absolute;width:118%;padding-bottom:118%;border-radius:50%;
+            background:radial-gradient(circle,rgba(255,102,0,0.20) 0%,rgba(255,102,0,0.06) 38%,transparent 66%)}
+        .hero-art img{position:relative;width:100%;max-width:400px;filter:drop-shadow(0 0 60px rgba(255,102,0,0.38));animation:heroFloat 7s ease-in-out infinite}
+        @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @media(max-width:900px){
+            .hero{grid-template-columns:1fr;min-height:0;padding:28px 0 8px;gap:0}
+            .hero-art{display:none}
+            .hero-logo-m{display:block;height:104px;width:auto;margin:0 0 28px;filter:drop-shadow(0 0 30px rgba(255,102,0,0.3))}
+            .hero-h{font-size:40px;letter-spacing:-1px}
+            .hero-lead{font-size:16px}
+            .hero .btn-primary{max-width:none;margin-top:30px;padding:20px 28px;font-size:17px}
+            .hero-trust{gap:22px}
+            .hero-eb{font-size:11px;letter-spacing:2px}
+            .hero-h{margin:12px 0 18px}
+        }
+        @media(max-width:380px){.hero-h{font-size:34px}}
+        @media (prefers-reduced-motion:reduce){.hero-art img{animation:none}}
     </style>
 <!-- Google tag (gtag.js) - Google Analytics Ascen Cripto -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-1W97258VD8"></script>
@@ -171,7 +239,7 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 </head>
-<body>
+<body class="intro">
 <div class="bg"></div>
 <div class="grid"></div>
 
@@ -180,15 +248,17 @@ src="https://www.facebook.com/tr?id=2542425419607619&ev=PageView&noscript=1"
         <img src="logo-banner.png" alt="Ascen Cripto">
     </div>
 
-    <!-- STEP 1: Intro -->
+    <!-- STEP 1: Intro (abertura premium) -->
     <div class="step active" id="step1">
-        <div class="card intro">
-            <div class="sec-label">Consultoria Gratuita</div>
-            <div class="sec-title">Formulário de Consultoria em Criptoativos</div>
-            <p class="sec-desc">Este formulário faz parte de um <strong>processo de seleção</strong>: atendemos os perfis com maior alinhamento à nossa metodologia de análise. O preenchimento não assegura o atendimento, mas todo caso enviado é analisado com critério pela nossa equipe.</p>
-        </div>
-        <div class="nav-row">
-            <button class="btn btn-primary" onclick="goStep(2)">Começar →</button>
+        <div class="hero">
+            <div class="hero-txt">
+                <img class="hero-logo-m" src="ascen-logo-v.png" alt="Ascen Cripto">
+                <div class="hero-eb">Consultoria gratuita · Ascen Strategy</div>
+                <h1 class="hero-h">Seu portfólio cripto,<br><em>com método</em></h1>
+                <p class="hero-lead"><b>Já investe?</b> A gente analisa o que você tem.<br><b>Está começando?</b> Mostramos como montar do zero.<br>Tudo com dados reais de mercado.</p>
+                <button class="btn btn-primary" onclick="goStep(2)">Começar →</button>
+            </div>
+            <div class="hero-art"><img src="ascen-logo-v.png" alt="Ascen Cripto"></div>
         </div>
     </div>
 
@@ -576,6 +646,7 @@ document.querySelectorAll('.other-input').forEach(function (inp) {
 function goStep(n) {
     document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
     document.getElementById('step' + n).classList.add('active');
+    if (n === 1) document.body.classList.add('intro'); else document.body.classList.remove('intro');
     // iOS antigo ignora scrollTo com objeto — fallback numérico
     if ('scrollBehavior' in document.documentElement.style) window.scrollTo({top: 0, behavior: 'smooth'});
     else window.scrollTo(0, 0);
